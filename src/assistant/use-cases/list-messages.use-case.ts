@@ -13,5 +13,5 @@ export const listMessagesUseCase = async (openai: OpenAI, options: Options) => {
     return messages.data.map((message: Message) => ({
         role: message.role,
         content: message.content.map(((content: TextContentBlock) => content.text.value))
-    }));
+    })).reverse();
 }

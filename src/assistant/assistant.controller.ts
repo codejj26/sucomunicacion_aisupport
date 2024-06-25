@@ -1,6 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
+
 import { AssistantService } from './assistant.service';
 import { QuestionDto } from './dtos';
+import { EmailDomain } from './decorators/email-domain.decorator';
 
 @Controller('assistant')
 export class AssistantController {
@@ -12,8 +14,16 @@ export class AssistantController {
   }
 
   @Post('messages')
-  async userQuestion(@Body() questionDto: QuestionDto) {
+  async userQuestion(@Body() questionDto: QuestionDto) {    
     return this.assistantService.userQuestion(questionDto);
+  }
+  
+  @Post('dummy')
+  async dummy(@EmailDomain() userEMail: string, @Body() questionDto: QuestionDto) {
+    return {
+      ...questionDto,
+      userEMail,
+    }
   }
 
 }
