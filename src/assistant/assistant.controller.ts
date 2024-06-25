@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 
 import { AssistantService } from './assistant.service';
 import { QuestionDto } from './dtos';
@@ -15,6 +15,9 @@ export class AssistantController {
 
   @Post('messages')
   async userQuestion(@Body() questionDto: QuestionDto) {    
+    if (!questionDto.threadId) {
+      throw new BadRequestException('threadId is required');
+    }
     return this.assistantService.userQuestion(questionDto);
   }
   
