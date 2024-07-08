@@ -9,10 +9,12 @@ export class AssistantController {
   constructor(private readonly assistantService: AssistantService) { }
 
   @Post('threads')
-  async createThread() {
-    return this.assistantService.createThread();
+  async createThread(@Body('userEmail') userEmail: string) {
+    if (!userEmail) {
+      throw new BadRequestException('userEmail is required');
+    }
+    return this.assistantService.createThread(userEmail);
   }
-
   @Post('messages')
   async userQuestion(@Body() questionDto: QuestionDto) {    
     if (!questionDto.threadId) {
